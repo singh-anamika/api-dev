@@ -1,4 +1,4 @@
-name: Trigger API Automation Workflow
+name: Trigger API Automation 
 
 on:
   push:
