@@ -1,3 +1,2 @@
 creating a sample file to commit changes
 creating a sample commit*****
-sample chamges
