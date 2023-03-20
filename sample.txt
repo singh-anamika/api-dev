@@ -1,3 +1,2 @@
 creating a sample file to commit changes
 
-making a sample commit
