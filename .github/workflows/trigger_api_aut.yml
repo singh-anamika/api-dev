@@ -1,4 +1,4 @@
-name: Trigger API Automation
+name: Trigger API Automation Workflow
 
 on:
   push:
@@ -6,13 +6,12 @@ on:
       - main
 
 jobs:
-  trigger_workflow:
+  trigger_automation:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger API Automation Workflow
         uses: peter-evans/repository-dispatch@v1
         with:
-          token: ${{ secrets.TOKEN }}
-          repository: OWNER_NAME/REPO_NAME
-          event-type: EVENT_NAME
-          client-payload: '{"some": "data"}'
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          repository: singh-anamika/postman-xray
+          event-type: run_api_automation
