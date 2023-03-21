@@ -1,4 +1,4 @@
-name: Trigger Webhook on Push
+name: Update Webhook on Push
 
 on:
   push:
@@ -6,23 +6,20 @@ on:
       - main
 
 jobs:
-  trigger_webhook:
+  update_webhook:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger Webhook
+      - name: Update Webhook
         run: |
           curl -H "Authorization: Bearer ${{ secrets.REPO_ACCESS_TOKEN }}" \
             -H "Accept: application/vnd.github.v3+json" \
             https://api.github.com/repos/singh-anamika/postman-xray/hooks \
-            -X POST \
+            -X PATCH \
             -d '{
-                  "name": "web",
-                  "active": true,
-                  "events": ["push"],
                   "config": {
                     "url": "https://9b7a-2401-4900-1c39-5b84-9227-f687-fda8-fd9f.in.ngrok.io/github-webhook/",
                     "content_type": "json",
                     "secret": "${{ secrets.POSTMAN_XRAY_WEBHOOK_SECRET }}"
                   }
                 }'
-          echo "Webhook created!"
+          echo "Webhook updated!"
