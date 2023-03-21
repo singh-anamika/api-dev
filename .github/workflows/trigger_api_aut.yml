@@ -1,4 +1,4 @@
-name: Trigger API Automation 
+name: Trigger Webhook on Push
 
 on:
   push:
@@ -6,12 +6,20 @@ on:
       - main
 
 jobs:
-  trigger_automation:
+  trigger_webhook:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger API Automation Workflow
-        uses: peter-evans/repository-dispatch@v1
+      - name: Trigger Webhook
+        uses: distributhor/webhook@v1
         with:
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}
-          repository: singh-anamika/postman-xray
-          event-type: run_api_automation
+          url: https://api.github.com/repos/postman-xray/dispatches
+          method: POST
+          contentType: application/json
+          secret: ${{ secrets.POSTMAN_XRAY_WEBHOOK_SECRET }}
+          body: |
+            {
+              "event_type": "api-dev-push",
+              "client_payload": {
+                "repository": "api-dev"
+              }
+            }
