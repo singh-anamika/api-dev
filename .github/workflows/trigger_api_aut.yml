@@ -1,4 +1,4 @@
-name: Trigger Jenkins Job
+name: Multi-Job Action
 
 on:
   push:
@@ -6,11 +6,47 @@ on:
       - main
 
 jobs:
-  trigger_jenkins_job:
+  
+  job1:
     runs-on: ubuntu-latest
+    outputs:
+      job_status: ${{ steps.set_status.outputs.job_status }}
+
     steps:
-      - name: Trigger Jenkins Job
+      - uses: actions/checkout@v2
+
+      - name: Install Python Packages
+        run: pip install requests
+  
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14.x'
+
+      - name: Install Newman
         run: |
-          curl -X POST https://10c7-2405-201-4028-2812-826c-1cf-e249-b534.in.ngrok.io/job/xray-pipeline/build \
-            --user ${{ secrets.JENKINS_USERNAME }}:${{ secrets.JENKINS_API_TOKEN }} \
-            --data-urlencode token=123456
+          npm install -g newman
+          npm install -g newman-reporter-junitfull
+          npm install -g newman-reporter-junitxray
+        
+      - name: Run API tests via Newman
+        id: newman
+        run: newman run https://api.postman.com/collections/18481634-926bcc97-e8db-4354-ac57-e293cd106587?access_key=PMAT-01GV2Y8JN6HSKEW0PRMRKK8GVA --reporters cli,junitfull --reporter-junitfull-export cvc-report.xml
+
+      - name: Upload Newman JUnit report
+        continue-on-error: true
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: newman-report
+          path: cvc-report.xml
+          
+      - name: Set job status
+        id: set_status
+        if: ${{ always() }}
+        run: |
+          if [ "${{ steps.newman.outcome }}" == "success" ]; then
+            echo "::set-output name=job_status::success"
+          else
+            echo "::set-output name=job_status::failed"
+          fi
