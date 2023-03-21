@@ -1,4 +1,4 @@
-name: Trigger Jenkins Job on Push in api-dev Repository
+name: Trigger Jenkins Job
 
 on:
   push:
@@ -6,15 +6,11 @@ on:
       - main
 
 jobs:
-  trigger_webhook:
+  trigger_jenkins_job:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger Postman-Xray Webhook
-        uses: peter-evans/repository-dispatch@v1
-        with:
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}
-          repository: singh-anamika/postman-xray
-          event-type: trigger-webhook
-          client-payload: '{"repository": {"name": "api-dev"}, "ref": "${{ github.ref }}", "url": "https://1ec9-2405-201-4028-2812-826c-1cf-e249-b534.in.ngrok.io/github-webhook/"}'
-        env:
-          GITHUB_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
+      - name: Trigger Jenkins Job
+        run: |
+          curl -X POST https://1ec9-2405-201-4028-2812-826c-1cf-e249-b534.in.ngrok.io/job/xray-pipeline/build \
+            --user ${{ secrets.JENKINS_USERNAME }}:${{ secrets.JENKINS_API_TOKEN }} \
+            --data-urlencode token=123456
