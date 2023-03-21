@@ -6,7 +6,6 @@ on:
       - main
 
 jobs:
-  
   job1:
     runs-on: ubuntu-latest
     outputs:
@@ -50,3 +49,12 @@ jobs:
           else
             echo "::set-output name=job_status::failed"
           fi
+
+  trigger_jenkins_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Jenkins Job
+        run: |
+          curl -X POST https://7adf-2405-201-4028-2812-826c-1cf-e249-b534.in.ngrok.io/job/xray-pipeline/build \
+            --user ${{ secrets.JENKINS_USERNAME }}:${{ secrets.JENKINS_API_TOKEN }} \
+            --data-urlencode token=123456
