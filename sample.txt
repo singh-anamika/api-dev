@@ -1,5 +1,5 @@
 creating a sample file to commit changes
 creating a sample commit*****
 ###########SAMPLE COMMIT#########
-#######
+###############
 ########SAMPLE CHANGES
