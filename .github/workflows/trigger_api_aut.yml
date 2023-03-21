@@ -12,8 +12,7 @@ jobs:
       - name: Trigger Webhook
         uses: distributhor/webhook@v1
         with:
-          url: https://api.github.com/repos/singh-anamika/postman-xray/dispatches
-
+          url: https://a124-2401-4900-1c39-5b84-29e0-d4ae-3183-7f33.in.ngrok.io/github-webhook/
           method: POST
           contentType: application/json
           secret: ${{ secrets.POSTMAN_XRAY_WEBHOOK_SECRET }}
