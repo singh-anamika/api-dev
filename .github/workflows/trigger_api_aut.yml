@@ -10,16 +10,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Webhook
-        uses: marvinpinto/action-invoke-webhook@v1
-        with:
-          url: https://a124-2401-4900-1c39-5b84-29e0-d4ae-3183-7f33.in.ngrok.io/github-webhook/
-          method: POST
-          contentType: application/json
-          secret: ${{ secrets.POSTMAN_XRAY_WEBHOOK_SECRET }}
-          body: |
-            {
-              "event_type": "api-dev-push",
-              "client_payload": {
-                "repository": "api-dev"
-              }
-            }
+        run: |
+          curl -H "Authorization: Bearer ${{ secrets.REPO_ACCESS_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/singh-anamika/postman-xray/hooks \
+            -X POST \
+            -d '{
+                  "name": "web",
+                  "active": true,
+                  "events": ["push"],
+                  "config": {
+                    "url": "https://9b7a-2401-4900-1c39-5b84-9227-f687-fda8-fd9f.in.ngrok.io/github-webhook/",
+                    "content_type": "json",
+                    "secret": "${{ secrets.POSTMAN_XRAY_WEBHOOK_SECRET }}"
+                  }
+                }'
+          echo "Webhook created!"
