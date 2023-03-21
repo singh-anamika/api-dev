@@ -1,4 +1,4 @@
-name: Trigger Webhook on Push
+name: Trigger Postman-Xray Webhook on Push
 
 on:
   push:
@@ -9,12 +9,12 @@ jobs:
   trigger_webhook:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger Webhook
+      - name: Trigger Postman-Xray Webhook
         uses: peter-evans/repository-dispatch@v1
         with:
-          token: ${{ secrets.POSTMAN_XRAY_WEBHOOK_SECRET }}
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
           repository: singh-anamika/postman-xray
-          event-type: 'trigger-webhook'
+          event-type: trigger-webhook
           client-payload: '{"url": "https://9b7a-2401-4900-1c39-5b84-9227-f687-fda8-fd9f.in.ngrok.io/github-webhook/"}'
         env:
           GITHUB_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
