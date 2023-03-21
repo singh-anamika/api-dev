@@ -1,12 +1,11 @@
-name: Multi-Job Action
-
+name: Run API Tests and Trigger Jenkins Job
 on:
   push:
     branches:
       - main
 
 jobs:
-  job1:
+  Running_API_Tests:
     runs-on: ubuntu-latest
     outputs:
       job_status: ${{ steps.set_status.outputs.job_status }}
@@ -50,7 +49,7 @@ jobs:
             echo "::set-output name=job_status::failed"
           fi
 
-  trigger_jenkins_job:
+  Trigger_Jenkins_Job:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Jenkins Job
