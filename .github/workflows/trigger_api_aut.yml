@@ -54,6 +54,6 @@ jobs:
     steps:
       - name: Trigger Jenkins Job
         run: |
-          curl -X POST https://8e2c-2405-201-4028-2812-919e-48-1ee7-3481.in.ngrok.io/job/xray-pipeline/build \
+          curl -X POST https://f6de-2405-201-4028-2812-85d0-a0ba-7875-98cd.in.ngrok.io/job/xray-pipeline/build \
             --user ${{ secrets.JENKINS_USERNAME }}:${{ secrets.JENKINS_API_TOKEN }} \
             --data-urlencode token=123456
